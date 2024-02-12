@@ -445,7 +445,7 @@ def poisson(lx,ly,nx,ny,lx0,ly0,iterations):
         print()
 
     # Display the solution in a 3-D plot
-    X, Y = np.meshgrid(x, y)
+    X, Y = np.meshgrid(y,x)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(Y,X, u, cmap='viridis')
