@@ -402,7 +402,7 @@ def crank_nicolson(N,Nt,lx,tx,alpha):
 
 # Poisson's equation
 
-# In[11]:
+# In[1]:
 
 
 # sol 5
@@ -448,7 +448,7 @@ def poisson(lx,ly,nx,ny,lx0,ly0,iterations):
     X, Y = np.meshgrid(x, y)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.plot_surface(X, Y, u, cmap='viridis')
+    ax.plot_surface(Y,X, u, cmap='viridis')
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
     ax.set_zlabel('Solution')
@@ -456,4 +456,10 @@ def poisson(lx,ly,nx,ny,lx0,ly0,iterations):
     plt.show()
     
     return x,y,u
+
+
+# In[ ]:
+
+
+
 
