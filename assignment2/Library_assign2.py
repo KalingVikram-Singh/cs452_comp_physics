@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[185]:
+# In[4]:
 
 
 import math
@@ -11,34 +11,35 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
 
-# In[186]:
+# In[5]:
 
 
 # Question 1 (Cholesky)
 
 #This function decomposes A into Lower and Upper which are transpose of each other and checks if A is symmetric.
 #Check if a matrix is symmetric 
-def is_symmetric(Asm):                                            
+def is_symmetric(A_sm):                                            
     i=0
     counter=0
-    while i<len(Asm):
+    while i<len(A_sm):
         j=0
-        while j<len(Asm):
-            if Asm[i][j]==Asm[j][i]:
+        while j<len(A_sm):
+            if A_sm[i][j]==A_sm[j][i]:
                 counter+=1    
             j+=1
         i+=1
-    if counter==len(Asm)*len(Asm):
+    if counter==len(A_sm)*len(A_sm):
         return True
     else:
         return False
     
 #Return the transpose of a matrix
-def transpose(B_tr):       
+def transpose(A_tr):       
     i=0
+    B_tr=copy.copy(A_tr)
     while i<len(B_tr):
         j=i+1
-        while j<len(B_tr):
+        while j<len(A_tr):
             temp=B_tr[i][j]
             B_tr[i][j]=B_tr[j][i]
             B_tr[j][i]=temp
@@ -47,32 +48,32 @@ def transpose(B_tr):
     return B_tr
 
 
-def print_matrix(A):
-    for i in A:
+def print_matrix(A_z):
+    for i in A_z:
         print(i)
         
 def forwardsub_chol(A_fsub,B_fsub):
     n = len(A_fsub)
-    x22 = [0] * n
+    x = [0] * n
     for i in range(n):
-        x22[i] = B_fsub[i]
+        x[i] = B_fsub[i]
         for j in range(i):
-            x22[i] -= A_fsub[i][j] * x22[j]
-        x22[i] /= A_fsub[i][i]
+            x[i] -= A_fsub[i][j] * x[j]
+        x[i] /= A_fsub[i][i]
 
-    return x22
+    return x
 
 def backwardsub_chol(matrix, b):
     n = len(matrix)
-    xbc = [0] * n
+    x = [0] * n
 
     for i in range(n - 1, -1, -1):
-        xbc[i] = b[i]
+        x[i] = b[i]
         for j in range(i + 1, n):
-            xbc[i] -= matrix[i][j] * xbc[j]
-        xbc[i] /= matrix[i][i]
+            x[i] -= matrix[i][j] * x[j]
+        x[i] /= matrix[i][i]
 
-    return xbc
+    return x
 
 def cholesky(A_cholmat):
     
@@ -117,7 +118,7 @@ def truncate_float(f, n):
     return '.'.join([i, (d + '0' * n)[:n]])
 
 
-# In[187]:
+# In[8]:
 
 
 # A=[[4,-1,0,-1,0,0],[ -1,4,-1,0,-1,0],[0,-1,4,0,0,-1],[-1,0,0,4,-1,0],[0,-1,0,-1,4,-1],[0,0,-1,0,-1,4]]
@@ -141,14 +142,14 @@ def truncate_float(f, n):
 #     print(truncated_value)  
 
 
-# In[188]:
+# In[10]:
 
 
 # Question 1 (Gauss Siedel)
 
 #function for gauss-seidel
-def gauss_seidel(A,B,X):  
-    n=len(A)
+def gauss_seidel(A_gs,B_gs,X):  
+    n=len(A_gs)
     tol=10**(-6)
     X_old=[]
     diff=1
@@ -156,25 +157,25 @@ def gauss_seidel(A,B,X):
         X_old.append(0)
     for k in range(100):                
         for i in range(n):                  
-            sum1=B[i]                   # Assigning b[i] before hand so as to reduce steps where we subtract b[i] from other number.    
+            sum1=B_gs[i]                   # Assigning b[i] before hand so as to reduce steps where we subtract b[i] from other number.    
             sum2=0
             j=0
             k=i+1
             while j<i:
-                sum1-=A[i][j]*X[j]
+                sum1-=A_gs[i][j]*X[j]
                 j+=1
             while k<n:
-                sum2-=A[i][k]*X_old[k]                  #Using iterations
+                sum2-=A_gs[i][k]*X_old[k]                  #Using iterations
                 k+=1
             X_old=copy.copy(X)
-            X[i]=(sum1+sum2)/A[i][i]
+            X[i]=(sum1+sum2)/A_gs[i][i]
         diff=abs(X_old[i]-X[i])             #Check of tolerance
         if diff<tol:
             return X
     return "Non-ending"
 
 
-# In[189]:
+# In[23]:
 
 
 # C=[[4,-1,0,-1,0,0],[ -1,4,-1,0,-1,0],[0,-1,4,0,0,-1],[-1,0,0,4,-1,0],[0,-1,0,-1,4,-1],[0,0,-1,0,-1,4]]
@@ -189,12 +190,12 @@ def gauss_seidel(A,B,X):
 #     print(truncate_value)
 
 
-# In[190]:
+# In[14]:
 
 
 #Function for LU decomposition
-def print_matrix(A):
-    for i in A:
+def print_matrix(A_pm):
+    for i in A_pm:
         print(i)
         
 def forwardsub_LU(A_fsub,B_fsub):
@@ -245,7 +246,7 @@ def ludecomposition(A_lu):
     return lowertriangle,uppertriangle
 
 
-# In[191]:
+# In[24]:
 
 
 # # #Input@1
@@ -272,7 +273,7 @@ def ludecomposition(A_lu):
 #     print(truncated_value)  
 
 
-# In[192]:
+# In[16]:
 
 
 # Gauss jordan for solving linear equations and inverse
@@ -306,7 +307,7 @@ def gauss_jordan(C_gjs,D_gjs):
     return copy.deepcopy(D_gj)
 
 
-# In[193]:
+# In[25]:
 
 
 # # Input
@@ -324,7 +325,7 @@ def gauss_jordan(C_gjs,D_gjs):
 #     print(trunc_value)
 
 
-# In[194]:
+# In[19]:
 
 
 # Question 3
@@ -400,7 +401,7 @@ def inverse_via_conjugate_gradient(A, tol=1e-4, max_iter=1000):
     return inverse_matrix
 
 
-# In[195]:
+# In[26]:
 
 
 # # Question 3
@@ -446,7 +447,7 @@ def inverse_via_conjugate_gradient(A, tol=1e-4, max_iter=1000):
 # print("Thus, we get the inverse with a upto 4th decimal place correction. The matrix A *A_inv gives us identity with 10^(-4) errors" )
 
 
-# In[196]:
+# In[21]:
 
 
 # Question 4
@@ -535,24 +536,24 @@ def delta(x,y):
     else:
         return 0
 
-def inverse_via_conjugate_gradient_2(N_in, m,tol=1e-6, max_iter=1000):
-    n = N_in
-    identity_matrix = [[1 if i == j else 0 for j in range(N_in)] for i in range(N_in)]
+def inverse_via_conjugate_gradient_2(N, m,tol=1e-6, max_iter=1000):
+    n = N
+    identity_matrix = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
     inverse_matrix = []
 
     for i in range(n):
         # Each column of the identity matrix is used as 'b'
         b = [row[i] for row in identity_matrix]
         x0 = [5] * n  # Initial guess
-        x_sol,residue,iterations = conjugate_gradient_onfly( b, N_in , x0, tol, max_iter,m)
-        inverse_matrix.append(x_sol)
+        x,residue,iterations = conjugate_gradient_onfly( b, N , x0, tol, max_iter,m)
+        inverse_matrix.append(x)
 
     # Transpose the result to get the inverse matrix
     inverse_matrix = list(map(list, zip(*inverse_matrix)))
     return inverse_matrix,residue,iterations
 
 
-# In[197]:
+# In[27]:
 
 
 # # Question 3
