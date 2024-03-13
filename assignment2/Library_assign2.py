@@ -528,7 +528,7 @@ def conjugate_gradient_onfly(b, N,x0, tol, max_iter,m):
     return x0,residue,iterations
 
 def A(x,y,m):
-    return (delta(x+1,y) + delta(x-1,y) - 2*delta(x,y))/2 + (m**(2))*delta(x,y)
+    return (delta((x+1)%50,y%50) + delta((x-1) %50,y%50) - 2*delta(x%50,y%50))/2 + (m**(2))*delta(x%50,y%50)
 
 def delta(x,y):
     if x==y:
