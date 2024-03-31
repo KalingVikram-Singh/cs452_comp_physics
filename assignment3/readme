@@ -1,3 +1,5 @@
 Solutions to assignment 1
-To view the output, kindly look at outputfiles.ipynb. It is a jupyter notebook, so it can be easily viewed when open in github itself.
-To run, donwload all files in a folder and run outfiles.ipynb in jupyter notebook to get the results
+To view the output, kindly look at Outputs.ipynb. It is a jupyter notebook, so it can be easily viewed when open in github itself.
+To run, donwload all files in a folder and run outfiles.ipynb in jupyter notebook to get the results.
+
+The pdf file for questn 3,4 are not made, but are embedded in ipynb file, which can be viewed in opyputs.ipynb
