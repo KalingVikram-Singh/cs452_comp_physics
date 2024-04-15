@@ -32,37 +32,6 @@ def dKedt(Tl):   #Thermal heat conductuvity for electronic lattifce.
 def Ke(Tl):   #Thermal heat conductuvity for electronic lattifce.
     return 3.5 * 10**(2)/(Tl**(2))
 
-# def Ka(T):                                                  #Thermal conductivity for ions
-#     alpha1 = 10
-#     alpha2 = 10
-#     t0 = 2.5*10**(-15) 
-#     r0 = 2.5*10**(-9)
-#     return 2.33 *(10**(-4))*(alpha1*t0/((alpha1*r0)**(2)*Ca(T)))
-# def Ke(T):                                                              #Thermal conductivity for electrons
-#     alpha1 = 10
-#     alpha2 = 10
-#     t0 = 2.5*10**(-15) 
-#     r0 = 2.5*10**(-9)
-#     return 0.15*(alpha1*t0/((alpha2*r0)**(2)*Ce(T)))
-# def Ca(T):                                                              #Specific heat for ions
-#     alpha1 = 10
-#     alpha2 = 10
-#     t0 = 2.5*10**(-15) 
-#     r0 = 2.5*10**(-9)
-#     return 3.91
-# def Ce(T):                                                            #Specific heat for electrons                                   
-#     alpha1 = 10
-#     alpha2 = 10
-#     t0 = 2.5*10**(-15) 
-#     r0 = 2.5*10**(-9)
-#     return 2.733 *(10**(-2))
-
-# def dKadt(T):                                                       #Derivative of thermal conductivity for ions
-#     return 0
-# def dKedt(T):                                                       #Derivative of thermal conductivity for electrons
-#     return 0
-
-
 def A(i,k,dr,dt,n,Te):                                              # A term in the equation  -  Acts as source term for electrons, stopping power of electronic lattice
     alpha1 = 100
     alpha2 = 100
@@ -149,24 +118,6 @@ def heat_equation_explicit_integration( r, z, t, dt, dr, dz):                   
                 d2Ta_dr2 = ((Ta[i+1,j,n] + Ta[i-1,j,n] - 2*Ta[i,j,n]) / (dr**2))
                 d2Ta_dz2 = ((Ta[i,j+1,n] + Ta[i,j-1,n] - 2*Ta[i,j,n]) / (dz**2))
 
-                # print("Ta",Ta[i,j,n], "n,j = ",n,j,i)
-                # print("Te",Te[i,j,n])
-                # print("d2Tedr2",d2Te_dr2)
-                # print("d2Tedz2",d2Te_dz2)
-                # print("d2Tadr2",d2Ta_dr2)
-                # print("d2Tadz2",d2Ta_dz2)
-                # print("dTe_dr",dTe_dr)
-                # print("dTe_dz",dTe_dz)
-                # print("dTa_dr",dTa_dr)
-                # print("dTa_dz",dTa_dz)
-                # print("A - ",A(i,n,dr,dt,n,Te))
-                # print("B - ",B(i,n,dr,dt,n,Ta))
-                # print("dKedt - ",dKedt(Te[i,j,n]))
-                # print("dKadt - ",dKadt(Ta[i,j,n]))
-                # print("Ka",Ka(Ta[i,j,n]))
-                # print("Ke",Ke(Te[i,j,n]))
-                # print("Ce",Ce(Te[i,j,n]))
-                # print("Ca",Ca(Ta[i,j,n]))
 
                 # Update temperatures
                 
@@ -175,12 +126,12 @@ def heat_equation_explicit_integration( r, z, t, dt, dr, dz):                   
     return Te, Ta
 alpha1 = 100
 t0 = 2.5*10**(-14)
-dr = 10**(-2)                   # finite difference for radial direction
-dz = 10**(-2)                   # finite difference for z direction
-dt = 8*10**(-6)                # finite difference for time
-r = 40
-z = 40
-t = 5*10**(4)   
+dr = 10**(-3)                   # finite difference for radial direction
+dz = 10**(-3)                   # finite difference for z direction
+dt = 10**(-9)                # finite difference for time
+r = 25
+z = 25
+t = 500000
 
 print("The divisions in R, Z and T are:",r,z,t,"\n")
 
@@ -198,9 +149,9 @@ R, Z = np.meshgrid(R, Z)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(R, Z, (total_temp[:,:,t-1]*300), cmap='viridis')
-ax.set_xlabel('Radial Distance')
-ax.set_ylabel('Axial Distance')
-ax.set_zlabel('Temperature')
+ax.set_xlabel('Radial Distance (x 250 nm)')
+ax.set_ylabel('Axial Distance (x 250 nm)')
+ax.set_zlabel('Temperature (x e-23 s)')
 plt.show()
 
 
@@ -219,4 +170,3 @@ plt.plot(time, temp_values)
 plt.xlabel(f'Time of evolution ( x {2*10**(-17)} s)')
 plt.ylabel('Temperature (K)')
 plt.show()
-
