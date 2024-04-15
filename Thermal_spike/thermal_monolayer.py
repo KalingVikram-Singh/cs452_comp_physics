@@ -72,7 +72,7 @@ def A(i,k,dr,dt,n,Te):                                              # A term in 
     T0 = 300
     Be = 1/((2*math.pi**(1.5))*(.84134*(r0**(2))*t0))
     A0 = Be*Se*alpha1*t0/(T0)
-    resul = A0*(np.exp(-alpha2 * (i*dr)**2-(alpha1 * (n*dt) - 0.75)**2 / 2))
+    resul = A0*(np.exp(-alpha2 * (i*dr)-(alpha1**(2) * (n*dt) - 0.75)**2 / 2))
     # print("A",resul)
     return resul
 
