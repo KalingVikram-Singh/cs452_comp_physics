@@ -3,27 +3,27 @@ import matplotlib.pyplot as plt
 import math
 from mpl_toolkits.mplot3d import Axes3D
 def Ca(T):  #Specific heat capacity for copper lalttice
-    if T < 1358:
+    if T < 1358/20:
         return 0.36 + 8.6*10**(-5)*T + 2.9*10**(-9)*T**(2)
-    if T>1358:
+    if T>1358/20:
         return 0.5
     
 def Ce(T):  #Specific heat capacity for electronic lalttice
-    if T < 1795.5: 
+    if T < 1795.5/20: 
         return 12.682 * T
-    if T > 1795.5 or T == 1795.5:
+    if T > 1795.5/20 or T == 1795.5/20:
         return 227554.754
          
 def Ka(T):   #Thermal heat conductuvity.
-    if T< 1358:
+    if T< 1358/20:
         return 0.6 + 0.0011*T - 2.6*10**(-7)*T**(2)
-    if T > 1358 :
+    if T > 1358/20 :
         return 2.1 
     
 def dKadt(T):   #Derivative of thermal heat conductuvity with respect to temperature.
-    if T< 1358:
+    if T< 1358/20:
         return 0.0011 - 5.2*10**(-7)*T
-    if T > 1358 :
+    if T > 1358/20 :
         return 0.1
 
 def dKedt(Tl):   #Thermal heat conductuvity for electronic lattifce.
@@ -37,7 +37,7 @@ def A(i,k,dr,dt,n,Te):                                              # A term in 
     alpha2 = 100
     t0 = 2.5*10**(-15) 
     r0 = 2.5*10**(-9)
-    Se = 0.0000002
+    Se = 0.00000049
     T0 = 300
     Be = 1/((2*math.pi**(1.5))*(.84134*(r0**(2))*t0))
     A0 = Be*Se*alpha1*t0/(T0)
@@ -52,9 +52,9 @@ def B(i,k,dr,dt,n,Ta):                                              # B term in 
     t0 = 2.5*10**(-15)                                            
     tau = 2.5*10**(-13) 
     R0 = 22*10**(-10)
-    Sn = 0.0000078
-    T0 = 300                                                        # Initial temperature, wihtout normalization
-    Bn = 9*10**(-12)/((2*math.pi**(1.5))*(.84134*(R0**(2))*tau))
+    Sn = 0.00000090
+    T0 = 20                                                        # Initial temperature, wihtout normalization
+    Bn = 9*10**(-11)/((2*math.pi**(1.5))*(.84134*(R0**(2))*tau))
     B0 = Sn*Bn*alpha1*t0/(alpha2*r0*T0)
     # print(B0)
     # print("B = ",(B0 /(i*dr))*np.exp(-alpha2*r0*(dr*i) -n*dt*(alpha1*t0)/tau ))
@@ -131,7 +131,7 @@ dz = 10**(-3)                   # finite difference for z direction
 dt = 10**(-9)                # finite difference for time
 r = 25
 z = 25
-t = 500000
+t = 600000
 
 print("The divisions in R, Z and T are:",r,z,t,"\n")
 
@@ -141,32 +141,49 @@ Z = np.linspace(0,z*dz,z)
 time = np.linspace(0,dr*t,t)
 
 # Create a meshgrid and plot the graph.
-
-total_temp =  Te + Ta
+import copy
+total_temp =  copy.deepcopy(Te + Ta)
 
 # print(total_temp)
 R, Z = np.meshgrid(R, Z)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(R, Z, (total_temp[:,:,t-1]*300), cmap='viridis')
+ax.plot_surface(R, Z, (total_temp[:,:,t-1]*20), cmap='viridis')
 ax.set_xlabel('Radial Distance (x 250 nm)')
 ax.set_ylabel('Axial Distance (x 250 nm)')
-ax.set_zlabel('Temperature (x e-23 s)')
+ax.set_zlabel('Temperature (K)')
 plt.show()
 
+# print(total_temp)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(R, Z, (Te[:,:,t-1]*20), cmap='viridis')
+ax.set_xlabel('Radial Distance (x 250 nm)')
+ax.set_ylabel('Axial Distance (x 250 nm)')
+ax.set_zlabel('Temperature (K)')
+plt.show()
+
+# print(total_temp)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(R, Z, (Ta[:,:,t-1]*20), cmap='viridis')
+ax.set_xlabel('Radial Distance (x 250 nm)')
+ax.set_ylabel('Axial Distance (x 250 nm)')
+ax.set_zlabel('Temperature (K)')
+plt.show()
 
 # Assuming R=10 and Z=20
 R_index = 10
 Z_index = 16
 
 # Extract the temperature values for the specific R and Z
-temp_values = (total_temp[R_index, Z_index, :]*300)
+temp_values = (total_temp[R_index, Z_index, :]*20)
 
 # Create an array for time
 time = np.arange(0, len(temp_values))
 
 # Plot Time against the temperature values
 plt.plot(time, temp_values)
-plt.xlabel(f'Time of evolution ( x {2*10**(-17)} s)')
+plt.xlabel(f'Time of evolution ( x {10**(-21)} s)')
 plt.ylabel('Temperature (K)')
 plt.show()
