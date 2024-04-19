@@ -263,16 +263,6 @@ plt.show()
 # print(total_temp)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.set_title("Electronic temperature of system") 
-ax.plot_surface(R, Z, (Te[:,:,t-1]*20), cmap='viridis')                  #Gives electronic temperature vs space coordinates
-ax.set_xlabel('Radial Distance (x 250 nm)')
-ax.set_ylabel('Axial Distance (x 250 nm)')
-ax.set_zlabel('Temperature (K)')
-plt.show()
-
-# print(total_temp)
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
 ax.set_title("Lattice temperature of system") 
 ax.plot_surface(R, Z, (Ta[:,:,t-1]*20), cmap='viridis')                  #Gives Lattice temperature vs space coordinates
 ax.set_xlabel('Radial Distance (x 250 nm)')
@@ -307,14 +297,7 @@ ax.set_ylabel('Axial Distance (x 250 nm)')
 ax.set_zlabel('Temperature (K)')
 plt.show()
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(R, Z, (Te2[:,:,t-1]*20), cmap='viridis')                 #Gives electronic temperature vs space coordinates of 2nd system
-ax.set_title("Electronic temperature of system 2") 
-ax.set_xlabel('Radial Distance (x 250 nm)')
-ax.set_ylabel('Axial Distance (x 250 nm)')
-ax.set_zlabel('Temperature (K)')
-plt.show()
+
 
 # Create 2*R and 2*Z
 R = np.linspace(0, 2*r*dr,r)
@@ -323,15 +306,6 @@ Z = np.linspace(0, 2*z*dz,z)
 # Create a meshgrid
 R, Z = np.meshgrid(R, Z)                                               #Making a grid for the plotting in 3D for 2 system
 
-# Plot the surface
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.set_title("Lattice temperature of system ") 
-ax.plot_surface(R, Z, (net1[:,:,t-1]*20), cmap='viridis')
-ax.set_xlabel('Radial Distance (x 250 nm)')
-ax.set_ylabel('Axial Distance (x 250 nm)')
-ax.set_zlabel('Temperature (K)')
-plt.show()
 
 nat2 = np.concatenate((Ta_1,Ta_2),axis = 2)
 # Plot the surface
