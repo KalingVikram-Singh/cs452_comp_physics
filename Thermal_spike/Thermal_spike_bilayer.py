@@ -4,28 +4,19 @@ import math
 import copy
 from mpl_toolkits.mplot3d import Axes3D
 def Ca(T):  #Specific heat capacity for copper lalttice
-    if T < 1358/20:
         return 0.36 + 8.6*10**(-5)*T + 2.9*10**(-9)*T**(2)
-    if T>1358/20:
-        return 0.5
+
     
 def Ce(T):  #Specific heat capacity for electronic lalttice
-    if T < 1795.5/20: 
         return 12.682 * T
-    if T > 1795.5/20 or T == 1795.5/20:
-        return 227554.754
+
          
 def Ka(T):   #Thermal heat conductuvity.
-    if T< 1358/20:
         return 0.6 + 0.0011*T - 2.6*10**(-7)*T**(2)
-    if T > 1358/20 :
-        return 2.1 
+
     
 def dKadt(T):   #Derivative of thermal heat conductuvity with respect to temperature.
-    if T< 1358/20:
         return 0.0011 - 5.2*10**(-7)*T
-    if T > 1358/20 :
-        return 0.1
 
 def dKedt(Tl):   #Thermal heat conductuvity for electronic lattifce.
     return -7 * 10**(2)/Tl
@@ -159,8 +150,9 @@ def heat_equation_explicit_integration2layer( r, z, t, dt, dr, dz):             
             # print("Spatial (r) step: i = ",i,"\n")
 
             for j in range(1, z-1):               # This is for the the axial distance
-                Te2[:,0,:] = Te[:,z-1,:] 
-                Ta2[:,0,:] = Ta[:,z-1,:] 
+                Te2[:,0,:] = Te[:,z-2,:] 
+                Ta2[:,0,:] = Ta[:,z-2,:] 
+                
 
                 # print("Spatial step (z): j = ",j,"\n")
 
@@ -217,7 +209,8 @@ def heat_equation_explicit_integration2layer( r, z, t, dt, dr, dz):             
 
                 Te2[i,j,n+1] = Te2[i,j,n] + (Ke2(Ta2[i,j,n])*dt)  *  (dTe_dr2/(i*dr) + d2Te_dr22 + d2Te_dz22) -  (dt/Ce2(Te2[i,j,n]))* (g*alpha1*t0)*(Te2[i,j,n] - Ta2[i,j,n]) + (dt/Ce2(Te2[i,j,n]))*A2(i,j,dr,dt,n,Te2)
                 Ta2[i,j,n+1] = Ta2[i,j,n] + (Ka2(Ta2[i,j,n])*dt)  *  (dTa_dr2/(i*dr) + d2Ta_dr22 + d2Ta_dz22) +  (dt/Ca2(Ta2[i,j,n]))* (g*alpha1*t0)*(Te2[i,j,n] - Ta2[i,j,n]) + (dt/Ca2(Ta2[i,j,n]))*B2(i,j,dr,dt,n,Ta2)
-
+        Te[:,z-1,t-1] = 0.7*Te[:,z-2,t-1]
+        Ta[:,z-1,t-1] = 0.7*Ta[:,z-2,t-1]
     return Te, Ta ,Te2, Ta2
 
 alpha1 = 100
@@ -227,7 +220,7 @@ dz = 10**(-3)                   # Finite difference for z direction.
 dt = 10**(-9)                   # Finite difference for time.
 r = 25
 z = 25
-t = 10000
+t = 8500
 print("The divisions in R, Z and T are:",r,z,t,"\n")
 
 Te,Ta,Te2,Ta2 = heat_equation_explicit_integration2layer(r, z, t, dt, dr, dz)
@@ -350,5 +343,6 @@ plt.plot(Z, temp_values,label = f"Temperature profile at r = 20 x2.5Angs")
 plt.legend()
 plt.xlabel(f' Axial distance ( x 50 Angs s)')                     #Gives  temperature vs time
 plt.ylabel('Temperature (K)')
-plt.xlim(0.1,0.225)
+plt.xlim(0,0.233)
 plt.show()
+print(Te2[10,0,t-1])
